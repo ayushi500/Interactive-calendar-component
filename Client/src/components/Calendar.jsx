@@ -205,7 +205,9 @@ export default function Calendar() {
                         {days.map((day) => {
                             const key = `${String(day.getMonth() + 1).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`;
                             const holiday = holidays[key];
-                            const hasNote = notes?.[day.toDateString()]?.trim();
+                            const hasNote =
+  typeof notes[day.toDateString()] === "string" &&
+  notes[day.toDateString()].trim() !== "";
                             const isStart =
                                 startDate?.toDateString() === day.toDateString();
                             const isEnd =
@@ -216,7 +218,7 @@ export default function Calendar() {
 
                             return (
                                 <motion.div
-                                    key={day}
+                                    key={day.toDateString()}
                                     title={holiday || ""}
                                     onClick={() => handleClick(day)}
                                     onMouseEnter={() => setHoverDate(day)}
