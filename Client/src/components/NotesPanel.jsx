@@ -1,16 +1,33 @@
 import { useState, useEffect } from "react";
 
-export default function NotesPanel({ startDate, endDate }) {
-  const [notes, setNotes] = useState("");
+export default function NotesPanel({ startDate, endDate, clearSelection, notes, setNotes }) {
+  const [text, setText] = useState("");
+
+
+  const handleSaveNote = () => {
+    if (!startDate) return;
+
+    const key = startDate.toDateString();
+    const updated = { ...notes };
+
+    if (text.trim() === "") {
+      delete updated[key];   // 🔥 remove if empty
+    } else {
+      updated[key] = text;
+    }
+
+    setNotes(updated);
+    localStorage.setItem("calendar-notes", JSON.stringify(updated));
+  };
 
   useEffect(() => {
-    const saved = localStorage.getItem("calendar-notes");
-    if (saved) setNotes(saved);
-  }, []);
+    if (startDate) {
+      const key = startDate.toDateString();
+      setText(notes[key] || "");
+    }
+  }, [startDate, notes]);
 
-  useEffect(() => {
-    localStorage.setItem("calendar-notes", notes);
-  }, [notes]);
+
 
   return (
     <div>
@@ -25,21 +42,47 @@ export default function NotesPanel({ startDate, endDate }) {
       <textarea
         className="w-full h-40 border rounded p-2 bg-[repeating-linear-gradient(white,white_24px,#eee_25px)]"
         placeholder="Write your notes here..."
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       />
 
-      <div className="flex justify-between mt-4">
+      <div className="flex justify-between items-center mt-4">
+
+        {/* CLEAR NOTE */}
         <button
-          onClick={() => setNotes("")}
-          className="px-3 py-1 border rounded"
+          onClick={() => {
+            if (!startDate) return;
+
+            const key = startDate.toDateString();
+
+            const updated = { ...notes };
+            delete updated[key];   // ✅ delete note properly
+
+            setNotes(updated);
+            localStorage.setItem("calendar-notes", JSON.stringify(updated));
+
+            setText("");
+          }}
+          className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700
+          hover:bg-gray-100 active:scale-95 transition"
         >
-          Clear
+          ✖ Clear Note
         </button>
 
-        <button className="px-3 py-1 bg-purple-600 text-white rounded">
-          Save ✓
+
+
+        {/* SAVE */}
+        <button
+          onClick={handleSaveNote}
+          className="px-5 py-2 rounded-lg text-white font-medium
+          bg-gradient-to-r from-purple-600 to-indigo-700
+          hover:from-purple-700 hover:to-indigo-800
+          active:scale-95 shadow-md transition"
+        >
+          💾 Save ✓
         </button>
+
+
       </div>
     </div>
   );

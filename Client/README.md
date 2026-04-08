@@ -4,49 +4,28 @@ A modern, visually rich calendar application built using **React + JavaScript**,
 
 ---
 
-## 🚀 Features
+## ✨ Features
 
-✨ **Dynamic Calendar UI**
-
-* Monthly calendar with smooth navigation
-* Range selection (start date → end date)
-
-🎨 **Theme Switcher**
-
-* 4 premium themes:
-
-  * Ocean Blue 🌊
-  * Forest Green 🌿
-  * Dusk Purple 🌌
-  * Ember Red 🔥
-
-🖼️ **Dynamic Hero Section**
-
-* Changes background image based on month
-* Beautiful landscape visuals
-
-📌 **Smart Indicators**
-
-* 🔵 Today indicator
-* 🪔 Indian holiday highlights (tooltip enabled)
-* 📝 Notes panel for selected dates
-
-🎬 **Animations**
-
-* Smooth hover effects using Framer Motion
-
-📱 **Responsive Design**
-
-* Works on desktop and mobile screens
+- 📅 Interactive calendar with date range selection
+- 🎨 Theme switcher (Ocean Blue, Forest Green, Dusk Purple, Ember Red)
+- 🖼️ Dynamic hero image (changes every month)
+- 🪔 Indian holiday indicators (with tooltip)
+- 🔵 Today indicator
+- 📝 Notes system (save notes per date)
+- 🟢 Note indicators (green dot on dates)
+- 💾 LocalStorage persistence (notes saved after refresh)
+- ✖ Clear selection & delete notes
+- ⚡ Smooth animations using Framer Motion
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
-* ⚛️ React (JavaScript)
-* 🎨 Tailwind CSS
-* 📅 date-fns
-* 🎬 Framer Motion
+- React.js
+- Tailwind CSS
+- date-fns
+- Framer Motion
+- LocalStorage API
 
 ---
 
@@ -75,7 +54,7 @@ git clone https://github.com/ayushi500/Interactive-calendar-component
 2. Navigate to project folder
 
 ```bash
-cd calendarproject
+cd Client
 ```
 
 3. Install dependencies
@@ -111,8 +90,8 @@ npm run dev
 ---
 
 ## 📸 Screenshots
-
-*(Add screenshots here after UI is ready)*
+![alt text](image.png)
+![alt text](image-1.png)
 
 ---
 

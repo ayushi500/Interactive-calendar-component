@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     startOfMonth,
     endOfMonth,
@@ -69,6 +69,17 @@ export default function Calendar() {
     const [endDate, setEndDate] = useState(null);
     const [hoverDate, setHoverDate] = useState(null);
     const [theme, setTheme] = useState(themes[0]);
+    const [notes, setNotes] = useState({});
+
+    useEffect(() => {
+        let saved = {};
+        try {
+            saved = JSON.parse(localStorage.getItem("calendar-notes")) || {};
+        } catch {
+            saved = {};
+        }
+        setNotes(saved);
+    }, [])
 
     const days = eachDayOfInterval({
         start: startOfMonth(currentDate),
@@ -76,12 +87,24 @@ export default function Calendar() {
     });
 
     const handleClick = (day) => {
+        if (startDate && !endDate && day.toDateString() === startDate.toDateString()) {
+            clearSelection();
+            return;
+        }
+
         if (!startDate) setStartDate(day);
         else if (!endDate) setEndDate(day);
         else {
             setStartDate(day);
             setEndDate(null);
         }
+
+        setHoverDate(null);
+    };
+
+    const clearSelection = () => {
+        setStartDate(null);
+        setEndDate(null);
         setHoverDate(null);
     };
 
@@ -128,7 +151,13 @@ export default function Calendar() {
 
                 {/* NOTES */}
                 <div className="w-full md:w-1/3 border-r p-4">
-                    <NotesPanel startDate={startDate} endDate={endDate} />
+                    <NotesPanel
+                        startDate={startDate}
+                        endDate={endDate}
+                        clearSelection={clearSelection}
+                        notes={notes}
+                        setNotes={setNotes}
+                    />
                 </div>
 
                 {/* CALENDAR */}
@@ -176,6 +205,7 @@ export default function Calendar() {
                         {days.map((day) => {
                             const key = `${String(day.getMonth() + 1).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`;
                             const holiday = holidays[key];
+                            const hasNote = notes?.[day.toDateString()]?.trim();
                             const isStart =
                                 startDate?.toDateString() === day.toDateString();
                             const isEnd =
@@ -193,14 +223,14 @@ export default function Calendar() {
                                     whileHover={{ scale: 1.1 }}
                                     className={`relative p-2 text-center rounded-lg cursor-pointer
 
-    ${isInRange(day) ? theme.light : ""}
-    ${isStart ? `${theme.color} text-white rounded-l-full` : ""}
-    ${isEnd ? `${theme.color} text-white rounded-r-full` : ""}
-    ${isToday ? `border-2 ${theme.border}` : ""}
+                                        ${isInRange(day) ? theme.light : ""}
+                                        ${isStart ? `${theme.color} text-white rounded-l-full` : ""}
+                                        ${isEnd ? `${theme.color} text-white rounded-r-full` : ""}
+                                        ${isToday ? `border-2 ${theme.border}` : ""}
 
-    ${dayOfWeek === 0 ? "text-red-500" : ""}
-  ${dayOfWeek === 6 ? "text-blue-500" : ""}
-  `}
+                                        ${dayOfWeek === 0 ? "text-red-500" : ""}
+                                    ${dayOfWeek === 6 ? "text-blue-500" : ""}
+                                    `}
                                 >
                                     {format(day, "d")}
 
@@ -214,11 +244,23 @@ export default function Calendar() {
                                         <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mx-auto mt-1"></div>
                                     )}
 
+                                    {hasNote && (
+                                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full mx-auto mt-1"></div>
+                                    )}
+
                                 </motion.div>
                             );
                         })}
                     </div>
 
+                    {(startDate || endDate) && (
+                        <button
+                            onClick={clearSelection}
+                            className="text-sm px-4 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition"
+                        >
+                            ✖ Clear Range
+                        </button>
+                    )}
 
                     <div className="flex justify-end mt-6">
                         <div className="bg-white/70 backdrop-blur-lg shadow-lg rounded-2xl px-4 py-3 flex items-center gap-3 border">
