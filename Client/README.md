@@ -75,7 +75,7 @@ git clone https://github.com/ayushi500/Interactive-calendar-component
 2. Navigate to project folder
 
 ```bash
-cd calendar-app
+cd calendarproject
 ```
 
 3. Install dependencies
