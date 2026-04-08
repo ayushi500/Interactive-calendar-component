@@ -8,7 +8,7 @@ import {
     subMonths,
 } from "date-fns";
 import { motion } from "framer-motion";
-import NotesPanel from "./NotesPanel";
+import NotesPanel from "./NotesPanel.jsx";
 
 const themes = [
     {
