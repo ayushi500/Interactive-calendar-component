@@ -95,6 +95,12 @@ npm run dev
 
 ---
 
+## 🌍 Live Demo
+
+👉 https://interactive-calendar-component-t55x.vercel.app/
+
+Experience the interactive calendar with theme switching, note-taking, and smooth animations.
+
 ## 🙋‍♀️ Author
 
 **Ayushi Sharma**
